@@ -136,9 +136,9 @@ export default function MenuCalculator() {
                   </div>
                 ))}
                 {isBundle && (
-                  <div className="text-sm text-green-700 mt-1 font-medium">
-                    Bundle discount applied! Total for {course}: ${courseTotal.toLocaleString()}
-                  </div>
+                  <div className="text-sm text-green-700 mt-1 font-medium text-right">
+                  Bundle discount applied! Total for {course}: ${courseTotal.toLocaleString()}
+                </div>
                 )}
               </div>
             </div>
