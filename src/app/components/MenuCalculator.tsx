@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { menuData } from '../data/menu';
 
 const BUNDLE_DISCOUNTS = {
@@ -26,6 +26,15 @@ export default function MenuCalculator() {
   const [guestCount, setGuestCount] = useState(100);
   const [selectedItems, setSelectedItems] = useState<Record<string, boolean>>({});
   
+  // Initialize all items as selected
+  useEffect(() => {
+    const initialSelected: Record<string, boolean> = {};
+    menuData.forEach(item => {
+      initialSelected[`${item.course}-${item.name}`] = true;
+    });
+    setSelectedItems(initialSelected);
+  }, []);
+
   const toggleItem = (course: string, name: string) => {
     setSelectedItems(prev => ({
       ...prev,
@@ -73,18 +82,18 @@ export default function MenuCalculator() {
   return (
     <div className="max-w-4xl mx-auto bg-white rounded-lg shadow">
       <div className="p-6 border-b border-gray-200">
-        <h2 className="text-2xl font-bold mb-4">Wedding Menu Calculator</h2>
+        <h2 className="text-2xl font-bold mb-4 text-black">Wedding Menu Calculator</h2>
         <div className="flex items-center gap-4">
-          <label className="text-sm font-medium">
+          <label className="text-sm font-medium text-black">
             Guest Count:
             <input
               type="number"
               value={guestCount}
               onChange={(e) => setGuestCount(Math.max(1, parseInt(e.target.value) || 0))}
-              className="ml-2 p-1 border rounded w-24"
+              className="ml-2 p-1 border rounded w-24 text-black"
             />
           </label>
-          <div className="text-lg font-bold">
+          <div className="text-lg font-bold text-black">
             Total: ${calculateTotal().toLocaleString()}
           </div>
         </div>
@@ -98,10 +107,10 @@ export default function MenuCalculator() {
           
           return (
             <div key={course} className="border rounded-lg p-4">
-              <h3 className="text-lg font-semibold mb-2 capitalize">
+              <h3 className="text-lg font-semibold mb-2 capitalize text-black">
                 {course}
                 {bundleDiscount && (
-                  <span className="text-sm font-normal text-gray-600 ml-2">
+                  <span className="text-sm font-normal text-black ml-2">
                     (All {bundleDiscount.requiredCount} for ${bundleDiscount.bundlePrice}/person)
                   </span>
                 )}
@@ -115,11 +124,11 @@ export default function MenuCalculator() {
                       onChange={() => toggleItem(course, item.name)}
                       className="w-4 h-4"
                     />
-                    <span className="flex-grow">{item.name}</span>
-                    <span className="text-sm font-medium">
+                    <span className="flex-grow text-black">{item.name}</span>
+                    <span className="text-sm font-medium text-black">
                       ${item.price}/person
                       {selectedItems[`${course}-${item.name}`] && !isBundle && (
-                        <span className="ml-2 text-gray-500">
+                        <span className="ml-2 text-gray-700">
                           (${(item.price * guestCount).toLocaleString()} total)
                         </span>
                       )}
@@ -127,7 +136,7 @@ export default function MenuCalculator() {
                   </div>
                 ))}
                 {isBundle && (
-                  <div className="text-sm text-green-600 mt-1">
+                  <div className="text-sm text-green-700 mt-1 font-medium">
                     Bundle discount applied! Total for {course}: ${courseTotal.toLocaleString()}
                   </div>
                 )}
